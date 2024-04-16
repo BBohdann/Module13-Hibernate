@@ -21,26 +21,15 @@ public class Ticket {
     @Column(name = "created_at" , nullable = false,updatable = false)
     private LocalDate createdAt;
 
-    @Column(name = "client_id")
-    private Long clientId;
-
-    @Column(name = "from_planet_id", nullable = false)
-    @Pattern(regexp = "^[A-Z0-9]*$")
-    private String fromPlanetId;
-
-    @Column(name = "to_planet_id", nullable = false)
-    @Pattern(regexp = "^[A-Z0-9]*$")
-    private String toPlanetId;
-
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id" , referencedColumnName = "id")
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "from_planet_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "from_planet_id", referencedColumnName = "id")
     private Planet fromPlanet;
 
     @ManyToOne
-    @JoinColumn(name = "to_planet_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "to_planet_id", referencedColumnName = "id")
     private Planet toPlanet;
 }

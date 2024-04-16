@@ -1,14 +1,17 @@
 package planet;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.ToString;
+import ticket.Ticket;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
+@ToString(exclude = {"fromTickets", "toTickets"})
 @Table(name = "planet")
 public class Planet {
 
@@ -20,9 +23,9 @@ public class Planet {
     @Column(name = "name" , length = 500 ,nullable = false)
     private String name;
 
-//    @OneToMany(mappedBy = "fromPlanet")
-//    private List<Ticket> fromTickets;
-//
-//    @OneToMany(mappedBy = "toPlanet")
-//    private List<Ticket> toTickets;
+    @OneToMany(mappedBy = "fromPlanet", cascade = CascadeType.ALL)
+    private List<Ticket> fromTickets = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toPlanet", cascade = CascadeType.ALL)
+    private List<Ticket> toTickets = new ArrayList<>();
 }

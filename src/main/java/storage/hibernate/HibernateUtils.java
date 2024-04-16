@@ -14,7 +14,7 @@ public class HibernateUtils {
         this.sessionFactory = new Configuration()
                 .addAnnotatedClass(Planet.class)
                 .addAnnotatedClass(Client.class)
-//                .addAnnotatedClass(Ticket.class)
+                .addAnnotatedClass(Ticket.class)
                 .buildSessionFactory();
     }
 

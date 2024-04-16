@@ -1,66 +1,46 @@
 package org.example;
 
-import client.Client;
 import client.ClientCrudService;
 import client.ClientService;
-import planet.Planet;
 import planet.PlanetCrudService;
 import planet.PlanetService;
 import storage.flyway.DatabaseInit;
+import ticket.Ticket;
+import ticket.TicketCrudService;
+import ticket.TicketService;
+import java.time.LocalDate;
 
 public class Main {
     public static ClientService clientService = new ClientCrudService();
     public static PlanetService planetService = new PlanetCrudService();
-
+    public static TicketService ticketService = new TicketCrudService();
 
     public static void main(String[] args) {
         new DatabaseInit().initDb();
-        clientProcess();
-
-        planetProcess();
+        ticketProcess();
     }
 
-    private static void planetProcess() {
-        Planet planet = new Planet();
-        planet.setId("EARTH");
-        planet.setName("C137");
+    public static void ticketProcess (){
+        //Create ticket
+        Ticket ticket = new Ticket();
+        ticket.setCreatedAt(LocalDate.now());
+        ticket.setFromPlanet(planetService.findById("P1").get());
+        ticket.setToPlanet(planetService.findById("P2").get());
+        ticket.setClient(clientService.findById(3L).get());
 
-        //Create planet
-        planetService.createPlanet(planet);
+        ticketService.createTicket(ticket);
 
-        //Update planet
-        planet.setId(planet.getId());
-        planet.setName("My own planet");
+        //Update ticket
+        ticket.setCreatedAt(LocalDate.now());
+        ticket.setFromPlanet(planetService.findById("P3").get());
+        ticket.setToPlanet(planetService.findById("P4").get());
+        ticket.setClient(clientService.findById(8L).get());
+        ticketService.updateTicket(ticket);
 
         //Find
-        planetService.findById(planet.getId());
+        System.out.println("Ticket by ID = " + ticketService.findById(ticket.getId()));
 
-        //Delete planet
-        planetService.deletePlanetById(planet.getId());
-
-        //Find
-        System.out.println("Planet by id = " + planetService.findById(planet.getId()).orElse(null));
-    }
-
-    private static void clientProcess() {
-        Client client = new Client();
-        client.setName("Taras");
-
-        //Create client
-        clientService.createClient(client);
-
-        //Update client
-        client.setId(client.getId());
-        client.setName("Rick Marcun");
-        clientService.updateClient(client);
-
-        //Find client
-        System.out.println("Client by ID = " + clientService.findById(client.getId()).orElse(null));
-
-        //Delete client
-        clientService.deleteClientById(client.getId());
-
-        //Find client
-        System.out.println("Client by ID = " + clientService.findById(client.getId()).orElse(null));
+        //Delete ticket
+        ticketService.deleteById(ticket.getId());
     }
 }
